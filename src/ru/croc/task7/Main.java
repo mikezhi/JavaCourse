@@ -1,23 +1,35 @@
 package ru.croc.task7;
 
 public class Main {
-    String source = "/*\n" +
-                    " * My first ever program in JAVA!\n" +
-                    " *\n" +
-                    "class Hello {// class body starts here \n" +
-                    "\n" +
-                    "   /* main method */ \n" +
-                    "   public static void main(String[] args/* we put command line arguments here*/) {\n" +
-                    "      //this line prints my first greeting to the screen \n" +
-                    "      System.out.println(\"Hi\"); // :)\n" +
-                    "   }\n" +
-                    "} // the end\n" +
-                    "// to be continued...\n";
-            ;
     public static void main(String[] args) {
-        String source ="..."; //test data
-        String noComents = removeJavaComments(source);
-        System.out.println(noComents);
+        //test data-string with two kind (/*...*/ and //) of comments
+        String sourceString = "/*\n" +
+                " * My first ever program in JAVA!\n" +
+                " */\n" +
+                "class Hello {// class body starts here \n" +
+                "\n" +
+                "   /* main method */" +
+                "   public static void main(String[] args/* we put command line arguments here*/) {\n" +
+                "      //this line prints my first greeting to the screen \n" +
+                "      System.out.println(\"Hi\"); // :)\n" +
+                "   }\n" +
+                "} // the end\n" +
+                "// to be continued...\n";
+
+        //make a remove comments
+        String noComments = removeJavaComments(sourceString);
+        //show result
+        System.out.println(noComments);
     }
 
+    static String removeJavaComments(String sourceString) {
+        //remove comments using regular expression
+        return sourceString.replaceAll(
+                "//.*|/\\*((.|\\n)(?!=*/))+\\*/", ""
+        );
+    }
 }
+
+
+
+
