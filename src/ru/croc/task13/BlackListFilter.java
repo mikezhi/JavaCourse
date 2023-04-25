@@ -39,4 +39,5 @@ public interface BlackListFilter<T> {
         }
         return filteredResult;
     }
+
 }
