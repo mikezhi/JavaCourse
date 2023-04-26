@@ -11,12 +11,10 @@ package ru.croc.task13;
  * попросили написать его реализацию:
  *
  */
+import java.util.List;
+import java.util.Set;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.function.Predicate;
-
-public interface BlackListFilter<T> {
+public interface BlackListFilter{
     /**
      * From the given list of comments removes ones
      * that contain words from the black list.
@@ -28,16 +26,5 @@ public interface BlackListFilter<T> {
      * be present in a comment
      */
 
-    default ArrayList<T> filterComments(Iterable<T> comments, Predicate<T> blacklist) {
-        ArrayList<T> filteredResult = new ArrayList<>();
-        Iterator<T> iterator  = comments.iterator();
-
-        while (iterator.hasNext()){
-         T comment  = iterator.next();
-         if (!blacklist.test(comment))
-             filteredResult.add(comment);
-        }
-        return filteredResult;
-    }
-
+    void filterComments(List<String> comments, Set<String> blackList);
 }
