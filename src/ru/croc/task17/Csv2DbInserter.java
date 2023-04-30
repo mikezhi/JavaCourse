@@ -22,16 +22,13 @@ package ru.croc.task17;
  * 3,nikita,Т5,Видеокарта,15000
  * 4,olga,Т5,Видеокарта,15000
  * 4,olga,Т5,Видеокарта,15000
- *
  * Дополнительно заказчик сообщил, что товары с одинаковым артикулом все-
  * гда продавались с одними и теми же названием и ценой.
- *
  * Спроектируйте структуру таблиц для представления информации о заказах
  * в базе данных и загрузите в них данные из файла. Для этого разработайте
  * приложение, которое:
  * Создаст в базе данных все необходимые таблицы.
  * Импортирует в базу данных все записи исходного файла.
- *
  * Путь к файлу с данными передается программе в качестве аргумента ко-
  * мандной строки при запуске.
  *
@@ -55,7 +52,7 @@ public class Csv2DbInserter {
             "CREATE TABLE Products" +
                     "(ArticleID VARCHAR(255) PRIMARY KEY," +
                     "Product VARCHAR(255) NOT NULL, " +
-                    "Cost INT NOT NULL);";
+                    "Price INT NOT NULL);";
 
     private static final String createOrders = "" +
             "CREATE TABLE Orders" +
@@ -66,13 +63,11 @@ public class Csv2DbInserter {
 
 
     public static void main(String[] args) {
-        //System.out.println("Solution for task17");
-
+        //в этот список запишем заказы (ID, UserName, Article)
+        List<Order> orders = new ArrayList<>();
         //в этот список запишем товары ArticleID, Product, Price
         List<Product> products = new ArrayList<>();
 
-        //в этот список запишем заказы (ID, UserName, Article)
-        List<Order> orders = new ArrayList<>();
 
         readCSV(args[0], orders, products);
 
@@ -88,7 +83,6 @@ public class Csv2DbInserter {
         } catch (SQLException e){
            e.printStackTrace();
         }
-////enf cvs2db class
     }
 
     static void readCSV(String path, List<Order> orders, List<Product> products){
@@ -107,6 +101,10 @@ public class Csv2DbInserter {
 
             //добавляем в список orders обьект класса
             orders.add(new Order(Integer.parseInt(temp[0]),temp[1],temp[2]));
+
+            //если нет с коллекции такого артикля то добавляем в список новый продукт
+            if (Articles.add(temp[2]))
+                products.add(new Product(temp[2], temp[3], Integer.parseInt(temp[4])));
         }
     }
 
@@ -142,8 +140,7 @@ public class Csv2DbInserter {
         }
     }
 
-
-
-
-
 }
+
+
+
