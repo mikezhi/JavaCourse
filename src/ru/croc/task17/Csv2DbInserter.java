@@ -43,7 +43,7 @@ package ru.croc.task17;
  */
 
 
-public class Main {
+public class Csv2DbInserter {
     public static void main(String[] args) {
         System.out.println("Solution for task17");
 
