@@ -3,12 +3,12 @@ package ru.croc.task17;
 public class Order {
     private int ID;
     private String uLogin;
-    private String arcicle;
+    private String article;
 
-    public Order(int ID, String uLogin, String arcicle){
+    public Order(int ID, String uLogin, String article){
         this.ID = ID;
         this.uLogin = uLogin;
-        this.arcicle = arcicle;
+        this.article = article;
     }
 
     public int getID(){
@@ -16,10 +16,10 @@ public class Order {
     }
 
     public String getuLogin(){
-        return getuLogin();
+        return uLogin;
     }
 
-    public String getArcicle(){
-        return getArcicle();
+    public String getArticle(){
+        return article;
     }
 }

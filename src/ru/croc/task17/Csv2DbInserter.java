@@ -5,10 +5,8 @@ package ru.croc.task17;
  * вручную. В нее внесены данные за все время существования магазина. Заказчик
  * выгрузил и передал вам эту таблицу в виде CSV-файла.
  * Формат файла
- *
  * <номер_заказа:integer>,<логин_пользователя:string>,<артикул_то-
  * вара:string>,<название_товара:string>,<цена_в_рублях:integer>
- *
  * Содержимое
  * 1,vasya,Т1,Монитор,500
  * 1,vasya,Т2,Мышь,50
@@ -31,7 +29,6 @@ package ru.croc.task17;
  * Импортирует в базу данных все записи исходного файла.
  * Путь к файлу с данными передается программе в качестве аргумента ко-
  * мандной строки при запуске.
- *
  */
 
 import java.io.IOException;
@@ -47,24 +44,25 @@ import java.util.*;
 
 public class Csv2DbInserter {
 
-    //запрос создания таблицы с полями для категории Заказы (Orders)
-    private static final String createProducts =
-            "CREATE TABLE Products" +
-                    "(ArticleID VARCHAR(255) PRIMARY KEY," +
-                    "Product VARCHAR(255) NOT NULL, " +
-                    "Price INT NOT NULL);";
+    //запрос создания таблицы с полями для категории Товары (Products)
+    private static final String createProducts = "CREATE TABLE Products" +
+            "(ArticleID VARCHAR(255) PRIMARY KEY," +
+            "Product VARCHAR(255) NOT NULL, " +
+            "Price INT NOT NULL);";
 
-    private static final String createOrders = "" +
-            "CREATE TABLE Orders" +
+    //запрос создания таблицы с полями для категории Заказы (Orders)
+    private static final String createOrders = "CREATE TABLE Orders" +
             "(ID INT NOT NULL, " +
             "UserName VARCHAR(255) NOT NULL, " +
             "Article VARCHAR(255), " +
-            "foreign key (Article) references Products(ArticleID));";;
+            "foreign key (Article) references Products(ArticleID));";
 
 
     public static void main(String[] args) {
+
+        //System.exit(0);
         //в этот список запишем заказы (ID, UserName, Article)
-        List<Order> orders = new ArrayList<>();
+       List<Order> orders = new ArrayList<>();
         //в этот список запишем товары ArticleID, Product, Price
         List<Product> products = new ArrayList<>();
 
@@ -135,12 +133,9 @@ public class Csv2DbInserter {
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setInt(1, order.getID());
                 statement.setString(2, order.getuLogin());
-                statement.setString(3, order.getArcicle());
+                statement.setString(3, order.getArticle());
             }
         }
     }
 
 }
-
-
-
