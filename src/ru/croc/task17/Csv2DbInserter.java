@@ -127,6 +127,7 @@ public class Csv2DbInserter {
         }
     }
 
+    //заполняем таблицу Orders
     static void orders2DB(Connection connection, List<Order> orders) throws SQLException{
         String query = "INSERT INTO Orders VALUES(?,?,?)";
         for(Order order : orders){
