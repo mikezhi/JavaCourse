@@ -37,6 +37,11 @@ package ru.croc.task17;
  *
  */
 
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.sql.*;
+import java.util.*;
+
 /**
  * change empty password for user 'sa', new password - 'tiger'
  * ALTER USER sa SET PASSWORD 'NEW_PASSWORD'
@@ -44,8 +49,101 @@ package ru.croc.task17;
 
 
 public class Csv2DbInserter {
-    public static void main(String[] args) {
-        System.out.println("Solution for task17");
 
+    //запрос создания таблицы с полями для категории Заказы (Orders)
+    private static final String createProducts =
+            "CREATE TABLE Products" +
+                    "(ArticleID VARCHAR(255) PRIMARY KEY," +
+                    "Product VARCHAR(255) NOT NULL, " +
+                    "Cost INT NOT NULL);";
+
+    private static final String createOrders = "" +
+            "CREATE TABLE Orders" +
+            "(ID INT NOT NULL, " +
+            "UserName VARCHAR(255) NOT NULL, " +
+            "Article VARCHAR(255), " +
+            "foreign key (Article) references Products(ArticleID));";;
+
+
+    public static void main(String[] args) {
+        //System.out.println("Solution for task17");
+
+        //в этот список запишем товары ArticleID, Product, Price
+        List<Product> products = new ArrayList<>();
+
+        //в этот список запишем заказы (ID, UserName, Article)
+        List<Order> orders = new ArrayList<>();
+
+        readCSV(args[0], orders, products);
+
+        // credentials for DB
+        String jdbcURL = "jdbc:h2:tcp://localhost/~/test";
+        String jdbcUserName = "sa";
+        String jdbcPassword = "tiger";
+
+        try (Connection conn = DriverManager.getConnection(jdbcURL, jdbcUserName, jdbcPassword)){
+            createTableIntoDB(conn);
+            products2DB(conn, products);
+            orders2DB(conn, orders);
+        } catch (SQLException e){
+           e.printStackTrace();
+        }
+////enf cvs2db class
     }
+
+    static void readCSV(String path, List<Order> orders, List<Product> products){
+        Scanner scan;
+        try {
+            scan = new Scanner(Paths.get(path));
+        } catch (IOException e){
+            System.out.println("Error opening file");
+            return;
+        }
+        // добавляем артикулы товаров для соблюдения уникальности
+        Set<String> Articles  = new HashSet<>();
+        String[] temp;
+        while (scan.hasNextLine()){
+            temp = scan.nextLine().split(",");
+
+            //добавляем в список orders обьект класса
+            orders.add(new Order(Integer.parseInt(temp[0]),temp[1],temp[2]));
+        }
+    }
+
+    // создаем таблицы в БД
+    static void createTableIntoDB(Connection connection) throws SQLException{
+        try(Statement statement = connection.createStatement()){
+            statement.execute(Csv2DbInserter.createProducts);
+            statement.execute(Csv2DbInserter.createOrders);
+        }
+    }
+
+    //заполняем таблицу Products
+    static void products2DB(Connection connection, List<Product> products) throws SQLException{
+        String query = "INSERT INTO Products VALUES(?,?,?)";
+        for (Product product : products){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, product.getProductCode());
+                statement.setString(2, product.getProductName());
+                statement.setString(3, product.getPrice());
+                statement.execute();
+            }
+        }
+    }
+
+    static void orders2DB(Connection connection, List<Order> orders) throws SQLException{
+        String query = "INSERT INTO Orders VALUES(?,?,?)";
+        for(Order order : orders){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setInt(1, order.getID());
+                statement.setString(2, order.getuLogin());
+                statement.setString(3, order.getArcicle());
+            }
+        }
+    }
+
+
+
+
+
 }
