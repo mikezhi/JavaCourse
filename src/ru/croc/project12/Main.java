@@ -1,12 +1,32 @@
 package ru.croc.project12;
 
+/**
+ *
+ *
+ * В приложении должно быть реализовано разделение доступа по ролям пользователей.
+ * Пользователь с ролью «Администратор» добавляется через БД и имеет доступ к полному функционалу программы
+ * (CRUD-операции, запуск тестирования).
+ * Обычные пользователи имеют доступ только к запуску тестирования. Авторизация в приложении выполняется по логину пользователя.
+ * Если пользователь ввел логин, которого нет в БД, то создается новый пользователь.
+ *
+ * 2. Используем библиотеки из состава JDK, javax.
+ * 3. Описываем подробно свое решение в README-файле.
+ *
+ * Необходимо описать, как запускать вашу программу, какие команды поддерживает программа.
+ * Желательно приводить скриншоты в описании функционала.
+ *
+ */
+
+
+
+
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Solution for project v12");
+    public static void main(String[] args){
+        String pathToFileWithNewWords = args[0];
+        String pathToConfig = args[1];
+        Config.getConfig(pathToConfig);
 
-
-
-
-
+        //new Starter().addingNewWordsFromFile(pathToFileWithNewWords);
+        new MainMenu().menu();
     }
 }
