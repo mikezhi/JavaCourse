@@ -4,14 +4,14 @@ import java.util.Scanner;
 
 /**
  * Класс, соответствующий главному меню приложения.*/
-public class MainMenu {
+public class MasterMenu {
 
     /**Метод выводит интерфейс главного меню в консоль.*/
     public void printMenu(){
         String menuStr = """
-                1) Посмотреть все слова в системе/какую-то конкретную группу
-                2) Узнать рекомендацию на сегодня
-                3) Повторить произвольную группу со словами
+                1) Автризоваться
+                2) Показать лидеров
+                3) Показать слова
                 4) Изменить набор слов в системе (добавить/удалить слова)
                 0) Выйти из приложения
                 """;
@@ -33,7 +33,7 @@ public class MainMenu {
                 System.out.println("Неверный ввод");
             }
             switch (x) {
-                case 1 -> new WordsPrinterMenu().menu();
+                case 1 -> new CheckIsAdmin();       //new WordsPrinterMenu().menu();
                 case 2 -> RecommendationSystem.getRecommendation();
                 case 3 -> {
                     System.out.println("Введите номер группы");
