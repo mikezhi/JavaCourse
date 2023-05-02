@@ -13,10 +13,10 @@ public class LeitnerSystem {
 
         System.out.println("Введите '0', если хотите прекратить повторение группы №" + groupNum);
 
-        WordDAO wordDAO = new WordDAO();
-        Map<Integer, Word> words = wordDAO.getGroupByNum(groupNum);
-        for (Map.Entry<Integer, Word> entry : words.entrySet()){
-            Word word = entry.getValue();
+        WordCRUD wordDAO = new WordCRUD();
+        Map<Integer, WordTranslate> words = wordDAO.getGroupByNum(groupNum);
+        for (Map.Entry<Integer, WordTranslate> entry : words.entrySet()){
+            WordTranslate word = entry.getValue();
             System.out.println("Введите перевод для " + word.getEnglish());
             String translatedWord = new Scanner(System.in).nextLine().toLowerCase();
 
@@ -26,7 +26,7 @@ public class LeitnerSystem {
 
             if (translatedWord.equals(word.getRussian().toLowerCase())){
                 System.out.println("Правильно!");
-                wordDAO.incrementGroup(word.getId());
+                //wordDAO.incrementGroup(word.getId());
             } else{
                 System.out.println("Неправильно!");
                 wordDAO.setGroup(word.getId(), 1);

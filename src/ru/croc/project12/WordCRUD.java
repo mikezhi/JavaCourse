@@ -1,18 +1,17 @@
 package ru.croc.project12;
 
 
-import java.io.ObjectInputFilter;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * WordDAO - класс, который позволяет работать с базой данных Words*/
-public class WordDAO{
+ * Данный DAO класс, он нужен для реализации CRUD-a, и работой с БД Words*/
+public class WordCRUD {
 
     private final Connection connection;
 
-    public WordDAO(){
+    public WordCRUD(){
         try {
             connection = DriverManager.getConnection(Config.getDBURL(), Config.getUSER(), Config.getPASSWORD());
         } catch (SQLException e) {
@@ -32,19 +31,21 @@ public class WordDAO{
     /**
      * Метод добавляет объект типа Word в таблицу words.
      * В случае, если таблица отсутствует, то создаётся новая.*/
-    public void addWordToDB(Word word){
+    public void addWordToDB(WordTranslate word){
         try (Statement stmt = connection.createStatement()){
 
-            String createTableWords = "CREATE TABLE IF NOT EXISTS words " +
-                    "(id int NOT NULL, " +
-                    "user_login VARCHAR(255) NOT NULL, " +
-                    "russian VARCHAR(255) NOT NULL," +
-                    "english VARCHAR(255) NOT NULL, " +
-                    "group_number int NOT NULL, " +
-                    "PRIMARY KEY (id));";
+            String createTableWords = "CREATE TABLE IF NOT EXISTS leitner_card ("+
+            "id int NOT NULL, "+
+            "role VARCHAR(25) NOT NULL, "+
+            "user_login VARCHAR(255) NOT NULL,"+
+            "ru_word VARCHAR(255) NOT NULL, "+
+            "en_word VARCHAR(255) NOT NULL, "+
+            "number_group int NOT NULL, "+
+            "PRIMARY KEY (id));";
+
             stmt.executeUpdate(createTableWords);
 
-            Word wordFromDB = findWordInDB(word.getEnglish());
+            WordTranslate wordFromDB = findWordInDB(word.getEnglish());
             if (wordFromDB != null){
                 return;
             }
@@ -64,7 +65,7 @@ public class WordDAO{
      * @param word - перевод слова на русский или английский языки
      * @return возвращает объект типа Word или null в случае,
      * если слово с таким переводом отсутствует в таблице*/
-    public Word findWordInDB(String word){
+    public WordTranslate findWordInDB(String word){
         try (Statement stmt = connection.createStatement()){
 
             String sql = String.format("SELECT * FROM words WHERE russian = '%s' OR english = '%s'", word, word);
@@ -75,7 +76,7 @@ public class WordDAO{
                 String russian = resultSet.getString("russian");;
                 String english = resultSet.getString("english");;
                 int group = resultSet.getInt("group_number");;
-                return new Word(id, russian, english, group);
+                return new WordTranslate(id, russian, english, group);
             }
             return null;
         } catch (SQLException e) {
@@ -100,21 +101,21 @@ public class WordDAO{
     /**Метод возвращает слова, соответствующие определенной группе
      * @param groupNum - номер группы
      * @return возвращает Map<Integer, Word>, где ключ это id слова, а значение - объект типа Word*/
-    public Map<Integer, Word> getGroupByNum(int groupNum){
+    public Map<Integer, WordTranslate> getGroupByNum(int groupNum){
         try (Statement stmt = connection.createStatement()){
 
             String sql  = String.format(
                     "SELECT * FROM words WHERE group_number = %d AND user_login = '%s'",
                     groupNum, Config.getUserLogin());
             ResultSet resultSet = stmt.executeQuery(sql);
-            Map<Integer, Word> words = new HashMap<>();
+            Map<Integer, WordTranslate> words = new HashMap<>();
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String russian = resultSet.getString("russian");;
                 String english = resultSet.getString("english");;
                 int group = resultSet.getInt("group_number");;
-                Word word = new Word(id, russian, english, group);
+                WordTranslate word = new WordTranslate(id, russian, english, group);
                 words.put(word.getId(), word);
             }
             return words;
@@ -125,7 +126,7 @@ public class WordDAO{
 
     /**Метод возвращает все слова из БД
      * @return возвращает Map<Integer, Word>, где ключ это id слова, а значение - объект типа Word*/
-    public Map<Integer, Word> getAllWords(){
+    public Map<Integer, WordTranslate> getAllWords(){
         try (Statement stmt = connection.createStatement()){
 
             String sql  = String.format("SELECT * FROM words WHERE user_login = '%s'",
@@ -133,14 +134,14 @@ public class WordDAO{
 
             ResultSet resultSet = stmt.executeQuery(sql);
 
-            Map<Integer, Word> words = new HashMap<>();
+            Map<Integer, WordTranslate> words = new HashMap<>();
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String russian = resultSet.getString("russian");;
                 String english = resultSet.getString("english");;
                 int group = resultSet.getInt("group_number");;
-                Word word = new Word(id, russian, english, group);
+                WordTranslate word = new WordTranslate(id, russian, english, group);
                 words.put(word.getId(), word);
             }
 
@@ -169,7 +170,7 @@ public class WordDAO{
     /**Метод увеличивает номер группы на один у слова,
      * которое задаётся идентфиикатором
      * @param id - идентификатор слова, группу которого следует увеличить*/
-    public void incrementGroup(int id){
+    /*public void incrementGroup(int id){
         try (Statement stmt = connection.createStatement()){
             String sql;
             sql  = "SELECT * FROM words WHERE id = " + id;
@@ -184,7 +185,7 @@ public class WordDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     /**Метод устанавливает номер группы у слова,
      * которое задаётся идентфиикатором

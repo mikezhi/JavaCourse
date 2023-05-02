@@ -1,0 +1,13 @@
+-- Здесь будут DDL-команды для создания схемы БД
+
+
+-- Таблица пользователей
+
+create TABLE IF NOT EXISTS leitner_card
+                    (id int NOT NULL,
+                    role VARCHAR(25) NOT NULL,
+                    user_login VARCHAR(255) NOT NULL,
+                    ru_word VARCHAR(255) NOT NULL,
+                    en_word VARCHAR(255) NOT NULL,
+                    number_group int NOT NULL,
+                    PRIMARY KEY (id));

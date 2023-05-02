@@ -13,7 +13,7 @@ import java.util.List;
  * Класс содержащий информацию о переводе слова на русский и английский языки, группе в которой слово находится
  * */
 
-public class Word{
+public class WordTranslate {
 
     /**Идентификатор слова.
      * Объект типа Word получает id только после добавления в базу данных системы Лейтейнера.*/
@@ -29,14 +29,14 @@ public class Word{
     private final int group;
 
 
-    public Word(int id, String russian, String english, int group){
+    public WordTranslate(int id, String russian, String english, int group){
         this.id = id;
         this.russian = russian;
         this.english = english;
         this.group = group;
     }
 
-    public Word(String russian, String english){
+    public WordTranslate(String russian, String english){
         this.id = -1;
         this.russian = russian;
         this.english = english;
@@ -66,20 +66,20 @@ public class Word{
                 "english: " + english;
     }
 
-    public static Word stringToWord(String line){
+    public static WordTranslate stringToWord(String line){
         String[] arr = line.split(";");
-        return new Word(-1, arr[1].trim(), arr[0].trim(), 1);
+        return new WordTranslate(-1, arr[1].trim(), arr[0].trim(), 1);
     }
 
-    public static List<Word> getNewWordsFromFile(String path){
+    public static List<WordTranslate> getNewWordsFromFile(String path){
         try (FileReader fr = new FileReader(path);
              BufferedReader reader = new BufferedReader(fr)){
 
-            List<Word> words = new ArrayList<>();
+            List<WordTranslate> words = new ArrayList<>();
             String line = reader.readLine();
 
             while (line != null) {
-                words.add(Word.stringToWord(line));
+                words.add(WordTranslate.stringToWord(line));
                 line = reader.readLine();
             }
 

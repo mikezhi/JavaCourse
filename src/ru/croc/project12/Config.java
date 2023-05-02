@@ -3,34 +3,27 @@ package ru.croc.project12;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Класс хранящий конфигурацию системы Лейтнера*/
+ * файл конфигурации */
 public class Config {
 
-    /**Уникальный идентификатор пользователя*/
+    /** логин пользователя для */
     private static String USER_LOGIN;
 
-    /**Ссылка на используемую базу данных*/
+    /** строка соединения с БД */
     private static String DB_URL;
 
-    /**Имя пользователя, через которого осуществляется управление БД*/
+    /** логин для входа в БД*/
     private static String USER;
 
-    /**Пароль от учётной записи БД*/
+    /**Пароль для входа в БД*/
     private static String PASSWORD;
 
-    /**Количество групп */ //это надо сделать
-    private static int GROUP_NUMBER;
-
-    /**Частота, с которой надо повторять каждую из групп*/
-    private static List<Integer> FREQUENCY;
 
     /**
-     * Метод получающий конфигурацию системы Лейтнера из файла
-     * @param path - путь к файлу, который содержит параметры системы
+     * получаем конфиг для задяния из файла
+     * @param path - путь к файлу где содержаться параметры системы
      * */
     public static void getConfig(String path){
         try (FileReader fr = new FileReader(path);
@@ -41,25 +34,14 @@ public class Config {
             USER = reader.readLine();
             PASSWORD = reader.readLine();
 
-            String line = reader.readLine();
-            int groupNum = Integer.parseInt(line);
-
-            List<Integer> frequency = new ArrayList<>();
-            line = reader.readLine();
-            String[] arr = line.split(" ");
-            for (String elem : arr) {
-                frequency.add(Integer.parseInt(elem));
-            }
-
-            GROUP_NUMBER = groupNum;
-            FREQUENCY = frequency;
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    /**Геттеры*/
+    /**
+     * make a getters
+     * */
 
     public static String getUserLogin() {
         return USER_LOGIN;
@@ -77,12 +59,5 @@ public class Config {
         return PASSWORD;
     }
 
-    public static int getGroupNumber() {
-        return GROUP_NUMBER;
-    }
-
-    public static List<Integer> getFREQUENCY() {
-        return FREQUENCY;
-    }
 
 }

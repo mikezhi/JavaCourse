@@ -3,7 +3,7 @@ package ru.croc.project12;
 import java.util.Scanner;
 
 /**Класс, позволяющий пользователю влиять на множество слов, хранящихся в базе данных.*/
-public class SystemStateChangeMenu {
+public class ManageWords {
 
     /**Метод выводит интерфейс взаимодействия с БД в консоль.*/
     public void printShowMenu(){
@@ -33,7 +33,7 @@ public class SystemStateChangeMenu {
             switch (x) {
                 case 1 -> addNewWord();
                 case 2 -> deleteWord();
-                case 3 -> new WordDAO().dropDB();
+                case 3 -> new WordCRUD().dropDB();
                 case 0 -> checker = false;
             }
         }
@@ -50,7 +50,7 @@ public class SystemStateChangeMenu {
         System.out.println("Введите слово на английском");
         String english = scanner.nextLine();
 
-        new WordDAO().addWordToDB(new Word(russian, english));
+        new WordCRUD().addWordToDB(new WordTranslate(russian, english));
     }
 
     /**Позволяет пользователю удалить слово из БД*/
@@ -58,6 +58,6 @@ public class SystemStateChangeMenu {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите слово на русском или на английском");
         String russianEnglishWord = scanner.nextLine();
-        new WordDAO().deleteWordFromDB(russianEnglishWord);
+        new WordCRUD().deleteWordFromDB(russianEnglishWord);
     }
 }

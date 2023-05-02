@@ -34,13 +34,13 @@ public class MasterMenu {
             }
             switch (x) {
                 case 1 -> new CheckIsAdmin();       //new WordsPrinterMenu().menu();
-                case 2 -> RecommendationSystem.getRecommendation();
+                case 2 -> System.out.println("Show all words");
                 case 3 -> {
                     System.out.println("Введите номер группы");
                     int group = scan.nextInt();
                     LeitnerSystem.repeatGroupByNum(group);
                 }
-                case 4 -> new SystemStateChangeMenu().menu();
+                case 4 -> new ManageWords().menu(); //упрадвление словми еслм ты Одмин))
                 case 0 -> checker = false;
             }
         }
