@@ -8,7 +8,7 @@ import java.io.IOException;
  * файл конфигурации */
 public class Config {
 
-    /** логин пользователя для */
+    /** логин пользователя в БД */
     private static String USER_LOGIN;
 
     /** строка соединения с БД */
