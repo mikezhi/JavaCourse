@@ -31,11 +31,13 @@ public class MasterMenu {
             }
             switch (x) {
                 case 1 -> {
-                    System.out.println("Введите свой логин, для проверки прав досутпа: ");
+                    System.out.println("Введите свой логин, для входа: ");
                     Scanner in = new Scanner(System.in);
                     if (new RoleChecker().hasRole(in.nextLine()) == true){
                         new WordForAdmin().menu();
-                    };
+                    } else {
+                        new WordForStudent().menu();
+                    }
                 }
                 case 0 -> checker = false;
             }

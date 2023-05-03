@@ -134,9 +134,8 @@ public class WordCRUD {
      * @return возвращает Map<Integer, Word>, где ключ это id слова, а значение - объект типа Word*/
 
     public Map<Integer, WordTranslate> getAllWords(){
-
+        return null;
     }
-
 
 
     /**Метод возвращает максимальный индекс в БД*/
@@ -160,10 +159,7 @@ public class WordCRUD {
      * @param id - идентификатор слова, группу которого следует увеличить*/
     public void incrementGroup(int id){
 
-
-
     }
-
 
     /**Метод устанавливает номер группы у слова,
      * которое задаётся идентфиикатором
@@ -171,7 +167,5 @@ public class WordCRUD {
      * @param number_group - номер группы*/
     public void setGroup(int id, int number_group){
 
-
     }
-
 }
