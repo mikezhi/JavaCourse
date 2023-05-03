@@ -9,10 +9,7 @@ public class MasterMenu {
     /**Метод выводит интерфейс главного меню в консоль.*/
     public void printMenu(){
         String menuStr = """
-                1) Автризоваться
-                2) Показать лидеров
-                3) Показать слова
-                4) Изменить набор слов в системе (добавить/удалить слова)
+                1) Введите логин
                 0) Выйти из приложения
                 """;
         System.out.println(menuStr);
@@ -33,14 +30,11 @@ public class MasterMenu {
                 System.out.println("Неверный ввод");
             }
             switch (x) {
-                case 1 -> new CheckIsAdmin();       //new WordsPrinterMenu().menu();
-                case 2 -> System.out.println("Show all words");
-                case 3 -> {
-                    System.out.println("Введите номер группы");
-                    int group = scan.nextInt();
-                    LeitnerSystem.repeatGroupByNum(group);
+                case 1 -> {
+                    System.out.println("Введите свой логин, для проверки прав досутпа: ");
+                    Scanner in = new Scanner(System.in);
+                    new RoleChecker(in.nextLine());
                 }
-                case 4 -> new ManageWords().menu(); //упрадвление словми еслм ты Одмин))
                 case 0 -> checker = false;
             }
         }

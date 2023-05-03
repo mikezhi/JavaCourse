@@ -26,8 +26,8 @@ public class Config {
      * @param path - путь к файлу где содержаться параметры системы
      * */
     public static void getConfig(String path){
-        try (FileReader fr = new FileReader(path);
-             BufferedReader reader = new BufferedReader(fr)) {
+       try (FileReader cfgFile = new FileReader(path);
+            BufferedReader reader = new BufferedReader(cfgFile)) {
 
             USER_LOGIN = reader.readLine();
             DB_URL = reader.readLine();
@@ -58,6 +58,4 @@ public class Config {
     public static String getPASSWORD() {
         return PASSWORD;
     }
-
-
 }

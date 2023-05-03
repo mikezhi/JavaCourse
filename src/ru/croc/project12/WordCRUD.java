@@ -2,11 +2,10 @@ package ru.croc.project12;
 
 
 import java.sql.*;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Данный DAO класс, он нужен для реализации CRUD-a, и работой с БД Words*/
+ * Данный класс нужен для реализации CRUD-a, и работой с БД */
 public class WordCRUD {
 
     private final Connection connection;
@@ -19,17 +18,38 @@ public class WordCRUD {
         }
     }
 
+    /**Метод проверяет существование пользователя с ролью Administrator в БД */
+    public boolean roleCheckDB(String role){
+
+        try (Statement stmt = connection.createStatement()){
+
+            String sql = String.format("SELECT * FROM leitner_card WHERE role = '%s'", role);
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            if (resultSet.next()){
+               //TODO thinking,...in progress
+                return true;
+
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     /**Метод удаляет таблицу "words", если она существует*/
     public void dropDB(){
         try (Statement stmt = connection.createStatement()){
-            stmt.executeUpdate("DROP TABLE IF EXISTS words;");
+            stmt.executeUpdate("DROP TABLE IF EXISTS leitner_card;");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Метод добавляет объект типа Word в таблицу words.
+     * Метод добавляет объект типа слово в таблицу leitner_card.
      * В случае, если таблица отсутствует, то создаётся новая.*/
     public void addWordToDB(WordTranslate word){
         try (Statement stmt = connection.createStatement()){
@@ -51,8 +71,8 @@ public class WordCRUD {
             }
 
             String insertWordInTable = String.format(
-                    "INSERT INTO words (id, user_login, russian, english, group_number)" +
-                            "VALUES (%d, '%s', '%s', '%s', %d);",
+                    "INSERT INTO leitner_card (id, role, user_login, ru_word, en_word, number_group)" +
+                            "VALUES (%d, '%s', '%s', '%s', '%s', %d);",
                     getMaxIndex() + 1, Config.getUserLogin(), word.getRussian(), word.getEnglish(), word.getGroup());
             stmt.executeUpdate(insertWordInTable);
 
@@ -68,15 +88,15 @@ public class WordCRUD {
     public WordTranslate findWordInDB(String word){
         try (Statement stmt = connection.createStatement()){
 
-            String sql = String.format("SELECT * FROM words WHERE russian = '%s' OR english = '%s'", word, word);
+            String sql = String.format("SELECT * FROM leitner_card WHERE russian = '%s' OR english = '%s'", word, word);
             ResultSet resultSet = stmt.executeQuery(sql);
 
             if (resultSet.next()){
                 int id = resultSet.getInt("id");
-                String russian = resultSet.getString("russian");;
-                String english = resultSet.getString("english");;
-                int group = resultSet.getInt("group_number");;
-                return new WordTranslate(id, russian, english, group);
+                String ru_word = resultSet.getString("ru_word");;
+                String en_word = resultSet.getString("en_word");
+                int number_group = resultSet.getInt("number_group");
+                return new WordTranslate(id, ru_word, en_word, number_group);
             }
             return null;
         } catch (SQLException e) {
@@ -90,7 +110,7 @@ public class WordCRUD {
     public void deleteWordFromDB(String word){
         try (Statement stmt = connection.createStatement()){
 
-            String sql = String.format("DELETE FROM words WHERE russian = '%s' OR english = '%s'", word, word);
+            String sql = String.format("DELETE FROM leitner_card WHERE ru_word = '%s' OR en_word = '%s'", word, word);
             stmt.executeUpdate(sql);
 
         } catch (SQLException e) {
@@ -98,64 +118,32 @@ public class WordCRUD {
         }
     }
 
+    //TODO need be to realize in future
     /**Метод возвращает слова, соответствующие определенной группе
      * @param groupNum - номер группы
      * @return возвращает Map<Integer, Word>, где ключ это id слова, а значение - объект типа Word*/
+    /**
     public Map<Integer, WordTranslate> getGroupByNum(int groupNum){
-        try (Statement stmt = connection.createStatement()){
 
-            String sql  = String.format(
-                    "SELECT * FROM words WHERE group_number = %d AND user_login = '%s'",
-                    groupNum, Config.getUserLogin());
-            ResultSet resultSet = stmt.executeQuery(sql);
-            Map<Integer, WordTranslate> words = new HashMap<>();
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String russian = resultSet.getString("russian");;
-                String english = resultSet.getString("english");;
-                int group = resultSet.getInt("group_number");;
-                WordTranslate word = new WordTranslate(id, russian, english, group);
-                words.put(word.getId(), word);
-            }
-            return words;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    }*/
 
+
+//TODO need be to realize in future
     /**Метод возвращает все слова из БД
      * @return возвращает Map<Integer, Word>, где ключ это id слова, а значение - объект типа Word*/
+  /**
     public Map<Integer, WordTranslate> getAllWords(){
-        try (Statement stmt = connection.createStatement()){
 
-            String sql  = String.format("SELECT * FROM words WHERE user_login = '%s'",
-                    Config.getUserLogin());
-
-            ResultSet resultSet = stmt.executeQuery(sql);
-
-            Map<Integer, WordTranslate> words = new HashMap<>();
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String russian = resultSet.getString("russian");;
-                String english = resultSet.getString("english");;
-                int group = resultSet.getInt("group_number");;
-                WordTranslate word = new WordTranslate(id, russian, english, group);
-                words.put(word.getId(), word);
-            }
-
-            return words;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
+   */
+
 
     /**Метод возвращает максимальный индекс в БД*/
     public int getMaxIndex(){
         try (Statement stmt = connection.createStatement()){
 
-            String sql  = "SELECT MAX(id) AS \"MAX\" FROM words";
+            String sql  = "SELECT MAX(id) AS \"MAX\" FROM leitner_cards";
 
             ResultSet resultSet = stmt.executeQuery(sql);
             resultSet.next();
@@ -170,33 +158,20 @@ public class WordCRUD {
     /**Метод увеличивает номер группы на один у слова,
      * которое задаётся идентфиикатором
      * @param id - идентификатор слова, группу которого следует увеличить*/
-    /*public void incrementGroup(int id){
-        try (Statement stmt = connection.createStatement()){
-            String sql;
-            sql  = "SELECT * FROM words WHERE id = " + id;
-            ResultSet resultSet = stmt.executeQuery(sql);
-            resultSet.next();
-            int group = resultSet.getInt("group_number");
-            if (group != Config.getGroupNumber()) {
-                group++;
-                sql = String.format("UPDATE words SET group_number = %d WHERE id = %d", group, id);
-                stmt.executeUpdate(sql);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
+    public void incrementGroup(int id){
+
+
+
+    }
+
 
     /**Метод устанавливает номер группы у слова,
      * которое задаётся идентфиикатором
      * @param id - идентификатор слова, группу которого следует увеличить
-     * @param group - номер группы*/
-    public void setGroup(int id, int group){
-        try (Statement stmt = connection.createStatement()){
-            String sql = String.format("UPDATE words SET group_number = %d WHERE id = %d", group, id);
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+     * @param number_group - номер группы*/
+    public void setGroup(int id, int number_group){
+
+
     }
+
 }

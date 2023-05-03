@@ -26,7 +26,7 @@ public class LeitnerSystem {
 
             if (translatedWord.equals(word.getRussian().toLowerCase())){
                 System.out.println("Правильно!");
-                //wordDAO.incrementGroup(word.getId());
+                wordDAO.incrementGroup(word.getId());
             } else{
                 System.out.println("Неправильно!");
                 wordDAO.setGroup(word.getId(), 1);
