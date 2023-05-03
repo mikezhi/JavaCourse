@@ -124,8 +124,7 @@ public class WordCRUD {
      * @return возвращает Map<Integer, Word>, где ключ это id слова, а значение - объект типа Word*/
 
     public Map<Integer, WordTranslate> getGroupByNum(int groupNum){
-
-
+      return null;
     }
 
 
@@ -136,7 +135,6 @@ public class WordCRUD {
     public Map<Integer, WordTranslate> getAllWords(){
         return null;
     }
-
 
     /**Метод возвращает максимальный индекс в БД*/
     public int getMaxIndex(){
