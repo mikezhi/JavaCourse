@@ -2,7 +2,7 @@ package ru.croc.project12;
 
 public class  RoleChecker {
 
-    public RoleChecker(String nextLine) {
+    public RoleChecker() {
     }
 
     public boolean hasRole(String role) {

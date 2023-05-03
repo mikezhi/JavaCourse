@@ -33,7 +33,9 @@ public class MasterMenu {
                 case 1 -> {
                     System.out.println("Введите свой логин, для проверки прав досутпа: ");
                     Scanner in = new Scanner(System.in);
-                    new RoleChecker(in.nextLine());
+                    if (new RoleChecker().hasRole(in.nextLine()) == true){
+                        new WordForAdmin().menu();
+                    };
                 }
                 case 0 -> checker = false;
             }
