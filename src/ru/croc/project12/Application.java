@@ -9,8 +9,10 @@ public class Application {
             //TODO classpath problem, execute problem
             //String pathToConfig = args[0];
             //Config.getConfig(pathToConfig);
-
-            new MasterMenu().menu();
+            //new MasterMenu().menu();
         }
+
+        System.out.println(new WordCRUD().roleCheckDB("Administrator"));
+
     }
 }

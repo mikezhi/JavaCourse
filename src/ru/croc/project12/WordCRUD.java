@@ -12,7 +12,7 @@ public class WordCRUD {
 
     public WordCRUD(){
         try {
-            connection = DriverManager.getConnection(Config.getDBURL(), Config.getUSER(), Config.getPASSWORD());
+            connection = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test", "sa", "tiger");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
