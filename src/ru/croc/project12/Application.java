@@ -12,7 +12,13 @@ public class Application {
             //new MasterMenu().menu();
         }
 
-        System.out.println(new WordCRUD().roleCheckDB("Administrator"));
+       // System.out.println(new WordCRUD().roleCheckDB("Administrator"));
+
+        // new MasterMenu().menu();
+       // System.out.println(new WordCRUD().findWordInDB("owl"));
+        //new WordCRUD().deleteWordFromDB("owl");
+        new WordCRUD().addWordToDB(3,);
+
 
     }
 }

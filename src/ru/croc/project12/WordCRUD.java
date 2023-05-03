@@ -88,7 +88,7 @@ public class WordCRUD {
     public WordTranslate findWordInDB(String word){
         try (Statement stmt = connection.createStatement()){
 
-            String sql = String.format("SELECT * FROM leitner_card WHERE russian = '%s' OR english = '%s'", word, word);
+            String sql = String.format("SELECT * FROM leitner_card WHERE ru_word = '%s' OR en_word = '%s'", word, word);
             ResultSet resultSet = stmt.executeQuery(sql);
 
             if (resultSet.next()){
