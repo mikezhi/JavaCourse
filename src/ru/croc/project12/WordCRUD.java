@@ -122,21 +122,21 @@ public class WordCRUD {
     /**Метод возвращает слова, соответствующие определенной группе
      * @param groupNum - номер группы
      * @return возвращает Map<Integer, Word>, где ключ это id слова, а значение - объект типа Word*/
-    /**
+
     public Map<Integer, WordTranslate> getGroupByNum(int groupNum){
 
 
-    }*/
+    }
 
 
 //TODO need be to realize in future
     /**Метод возвращает все слова из БД
      * @return возвращает Map<Integer, Word>, где ключ это id слова, а значение - объект типа Word*/
-  /**
+
     public Map<Integer, WordTranslate> getAllWords(){
 
     }
-   */
+
 
 
     /**Метод возвращает максимальный индекс в БД*/
